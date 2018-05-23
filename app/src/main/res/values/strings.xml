@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Submit 3</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="Score">Score Team</string>
+    <string name="liga_match">Liga Match</string>
+    <string name="detail_activity">Detail Activity</string>
+    <string name="favoriteteam">favorit</string>
+</resources>
