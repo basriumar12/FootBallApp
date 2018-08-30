@@ -1,4 +1,4 @@
-package com.blogbasbas.yukkotlin.team
+package com.kotlinje.submit2.adapter
 
 import android.support.v7.widget.RecyclerView
 import android.util.Log
@@ -7,10 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import com.blogbasbas.yukkotlin.R
-import com.blogbasbas.yukkotlin.team.modelteam.TeamsItem
+import com.kotlinje.submit2.R
 import com.squareup.picasso.Picasso
 import org.jetbrains.anko.find
+import com.kotlinje.submit2.model.liga.TeamsItem
 import org.jetbrains.anko.sdk25.coroutines.onClick
 
 

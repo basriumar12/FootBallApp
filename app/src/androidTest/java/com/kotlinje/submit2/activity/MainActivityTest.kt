@@ -19,45 +19,66 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 import android.support.test.espresso.Espresso.onView
+import android.support.test.espresso.Espresso.pressBack
+import android.support.test.espresso.action.ViewActions.actionWithAssertions
 import android.support.test.espresso.action.ViewActions.click
+import android.support.test.espresso.assertion.ViewAssertions.matches
+import android.support.test.espresso.contrib.RecyclerViewActions
 import android.support.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
-import android.support.test.espresso.matcher.ViewMatchers.withClassName
-import android.support.test.espresso.matcher.ViewMatchers.withId
+import android.support.test.espresso.matcher.ViewMatchers.*
+import android.support.v7.widget.RecyclerView
+import com.kotlinje.submit2.R.id.*
+import kotlinx.android.synthetic.main.activity_main.*
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.Matchers.`is`
 
-@LargeTest
+
 @RunWith(AndroidJUnit4::class)
 class MainActivityTest {
 
     @Rule
-    var mActivityTestRule = ActivityTestRule(MainActivity::class.java)
+    @JvmField
+    var activityRule = ActivityTestRule(MainActivity::class.java)
+
 
     @Test
-    fun mainActivityTest() {
-        val recyclerView = onView(
-                allOf(withId(R.id.layoutLiga),
-                        childAtPosition(
-                                withClassName(`is`("android.widget.FrameLayout")),
-                                1)))
-        recyclerView.perform(actionOnItemAtPosition<ViewHolder>(0, click()))
+    fun testRecyclerViewBehaviour() {
+        Thread.sleep(5000)
+        onView(withId(layoutLiga))
+                .check(matches(isDisplayed()))
+        onView(withId(layoutLiga))
+                .perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(15))
 
     }
 
-    private fun childAtPosition(
-            parentMatcher: Matcher<View>, position: Int): Matcher<View> {
+    @Test
+    fun testKlikRecyclerview() {
+        Thread.sleep(5000)
+        onView(withId(layoutLiga))
+                .check(matches(isDisplayed()))
+        onView(withId(layoutLiga)).perform(click())
+//        onView(withText("Crystal Palace")).perform(click())
 
-        return object : TypeSafeMatcher<View>() {
-            override fun describeTo(description: Description) {
-                description.appendText("Child at position $position in parent ")
-                parentMatcher.describeTo(description)
-            }
+    }
 
-            public override fun matchesSafely(view: View): Boolean {
-                val parent = view.parent
-                return (parent is ViewGroup && parentMatcher.matches(parent)
-                        && view == parent.getChildAt(position))
-            }
-        }
+
+    @Test
+    fun testAddFavorite() {
+
+        Thread.sleep(5000)
+        onView(withId(layoutLiga))
+                .check(matches(isDisplayed()))
+        onView(withText("Crystal Palace")).perform(click())
+
+        onView(withId(favoriteteam))
+                .check(matches(isDisplayed()))
+        onView(withId(favoriteteam)).perform(click())
+        Thread.sleep(3000)
+//       onView(withText("data berhasil disimpan")).check(matches(isDisplayed()))
+        pressBack()
+        onView(withId(navigation_buttom)).check(matches(isDisplayed()))
+        onView(withId(nav_favorite)).perform(click())
+
+
     }
 }

@@ -12,7 +12,7 @@ import com.kotlinje.submit2.network.repository.DetailRepositoryCallback
  */
 // add coruntines anko
 //submission 4
-interface DetailPlayerView : DetailRepositoryCallback<TeamResponse> {
+interface DetailTeamView : DetailRepositoryCallback<TeamResponse> {
     fun showLoadingProgress()
     fun hideLoadingProgress()
     fun showToastDetail(message: String?)

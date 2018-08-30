@@ -1,28 +1,36 @@
 package com.kotlinje.submit2.adapter
 
+import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import com.kotlinje.submit2.R
+import com.kotlinje.submit2.R.id.img_detail_gambar
+import com.kotlinje.submit2.R.id.img_team_player
 import com.kotlinje.submit2.model.event.EventLiga
+import com.kotlinje.submit2.model.player.PlayersItem
+import kotlinx.android.synthetic.main.activity_detail_team.*
 import org.jetbrains.anko.find
 import org.jetbrains.anko.sdk25.coroutines.onClick
+import kotlin.coroutines.experimental.coroutineContext
 
 /**
  * Created by User on 15/05/2018.
  */
 // add coruntines anko
 //submission 4
-class AdapterListData
-(private val events:List<EventLiga>, private val listener :(EventLiga)->Unit ) : RecyclerView.Adapter<AdapterListData.LastMatchViewHolder>()
+class AdapterListDataPlayer
+(private val events:List<PlayersItem>, private val listener :(PlayersItem)->Unit ) : RecyclerView.Adapter<AdapterListDataPlayer.LastMatchViewHolder>()
 
 {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LastMatchViewHolder {
         //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        val v  : View =LayoutInflater.from(parent.context).inflate(R.layout.item_list,parent,false)
+        val v  : View =LayoutInflater.from(parent.context).inflate(R.layout.item_list_player,parent,false)
         return LastMatchViewHolder(v)
 
     }
@@ -32,26 +40,27 @@ class AdapterListData
     override fun onBindViewHolder(holder:LastMatchViewHolder, position: Int) {
        // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         holder.bindItem(events[position],listener)
+        var getImageTeam = events[position].strThumb
+        println("get gambar in adapter :"+getImageTeam)
+       Glide.with(holder.imgTeamPlayer.context).load(getImageTeam).into(holder.imgTeamPlayer)
+
+
     }
 
 
     class LastMatchViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        val date: TextView = view.find(R.id.event_date)
-        val teamHome: TextView = view.find(R.id.home_team)
-        val teamAway: TextView = view.find(R.id.away_team)
-        val scoreHome: TextView? = view.find(R.id.home_team_score)
-        val scoreAway: TextView? = view.find(R.id.away_team_score)
+        val tvNamePlayer: TextView = view.find(R.id.tv_name_player)
+        val tvPosisitionPlayer: TextView = view.find(R.id.tv_posisition_player)
+        val imgTeamPlayer : ImageView = view.find(R.id.img_team_player)
 
 
-        fun bindItem(event: EventLiga, listener: (EventLiga) -> Unit) {
-            date.text = event.strDate
-           teamHome.text = event.strHomeTeam
-            teamAway.text = event.strAwayTeam
-            scoreHome?.text = event.intHomeScore
-            scoreAway?.text = event.intAwayScore
-            Log.d("TAG","Adapter cek :" +event.strDate)
-            Log.d("TAG","Adapter cek :" +event.strAwayTeam)
+        fun bindItem(event: PlayersItem, listener: (PlayersItem) -> Unit) {
+
+        tvNamePlayer.text = event.strPlayer
+       tvPosisitionPlayer.text = event.strPosition
+            //Glide.with().load(getImageTeam).into(imgTeamPlayer)
+            Log.d("TAG","Adapter cek :" +event.strPlayer)
 
             itemView.onClick { listener(event) }
         }

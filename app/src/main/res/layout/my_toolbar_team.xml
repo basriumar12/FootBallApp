@@ -9,20 +9,14 @@
     android:minHeight="?attr/actionBarSize"
     app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
     app:popupTheme="@style/Widget.AppCompat.Light.PopupMenu">
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+       <TextView
+           android:textSize="20sp"
+           android:textStyle="bold"
+           android:textColor="@android:color/white"
+           android:text="@string/app_name"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content" />
 
 
 
-        <ImageView
-            android:id="@+id/img_search_match"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginEnd="18dp"
-            android:src="@drawable/ic_search_black_24dp"
-            tools:ignore="VectorDrawableCompat" />
-    </RelativeLayout>
 </android.support.v7.widget.Toolbar>

@@ -18,14 +18,14 @@ import org.jetbrains.anko.sdk25.coroutines.onClick
 /**
  * Created by User on 02/06/2018.
  */
-class TeamsAdapter(private val teams: List<TeamsItem>, private val listener: (TeamsItem) -> Unit)
-    : RecyclerView.Adapter<TeamViewHolder>() {
+class SearchTeamsAdapter(private val teams: List<com.kotlinje.submit2.model.search.TeamsItem>, private val listener: (com.kotlinje.submit2.model.search.TeamsItem) -> Unit)
+    : RecyclerView.Adapter<TeamViewHoldera>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TeamViewHolder {
-        return TeamViewHolder(TeamUI().createView(AnkoContext.create(parent.context, parent)))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TeamViewHoldera {
+        return TeamViewHoldera(TeamUIa().createView(AnkoContext.create(parent.context, parent)))
     }
 
-    override fun onBindViewHolder(holder: TeamViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: TeamViewHoldera, position: Int) {
         holder.bindItem(teams[position], listener)
     }
 
@@ -33,7 +33,7 @@ class TeamsAdapter(private val teams: List<TeamsItem>, private val listener: (Te
 
 }
 
-class TeamUI : AnkoComponent<ViewGroup> {
+class TeamUIa : AnkoComponent<ViewGroup> {
     override fun createView(ui: AnkoContext<ViewGroup>): View {
         return with(ui) {
             linearLayout {
@@ -61,13 +61,12 @@ class TeamUI : AnkoComponent<ViewGroup> {
 
 }
 
-class TeamViewHolder(view: View) : RecyclerView.ViewHolder(view){
+class TeamViewHoldera(view: View) : RecyclerView.ViewHolder(view){
 
     private val teamBadge: ImageView = view.find(team_badge)
     private val teamName: TextView = view.find(team_name)
 
-    fun bindItem(teams: TeamsItem, listener: (TeamsItem) -> Unit) {
-        Log.e("TAG","Teamsadapter :"+teams.strTeam)
+    fun bindItem(teams: com.kotlinje.submit2.model.search.TeamsItem, listener: (com.kotlinje.submit2.model.search.TeamsItem) -> Unit) {
         Picasso.get().load(teams.strTeamBadge).into(teamBadge)
         teamName.text = teams.strTeam
         itemView.onClick { listener(teams) }

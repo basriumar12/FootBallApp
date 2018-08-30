@@ -3,25 +3,24 @@ package com.kotlinje.submit2.adapter
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
-import com.kotlinje.submit2.fragment.liga.FragmentLast
-import com.kotlinje.submit2.fragment.liga.FragmentNext
+import com.kotlinje.submit2.fragment.teams.FragmentOverviewTeam
+import com.kotlinje.submit2.fragment.teams.FragmentPlayerTeam
 
 /**
  * Created by User on 29/05/2018.
  */
-class TabAdapter (fm: FragmentManager?) : FragmentStatePagerAdapter(fm) {
+class TabAdapterTeam (fm: FragmentManager?, val idTeam : String) : FragmentStatePagerAdapter(fm) {
     override fun getItem(position: Int): Fragment {
-     //   TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         if (position == 0) {
-            return FragmentLast()
+            println("load overview")
+            return FragmentOverviewTeam.newInstance(idTeam,"")
         } else {
-            return FragmentNext()
+            return FragmentPlayerTeam.newInstance(idTeam,"")
         }
 
     }
 
     override fun getCount(): Int {
-       // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
 
     return 2
     }

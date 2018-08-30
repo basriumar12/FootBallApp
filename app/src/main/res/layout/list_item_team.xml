@@ -25,6 +25,6 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="80dp"
         android:layout_marginTop="30dp"
-        android:text="@string/team" />
+        android:text="team" />
 
 </android.support.v7.widget.CardView>

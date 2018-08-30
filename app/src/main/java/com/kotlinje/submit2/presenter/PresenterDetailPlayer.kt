@@ -1,9 +1,9 @@
 package com.kotlinje.submit2.presenter
 
-import com.kotlinje.submit2.model.team.TeamResponse
+import com.kotlinje.submit2.model.detail_player.ResponseDetailPlayer
 import com.kotlinje.submit2.network.repository.DetailRepositoryCallback
-import com.kotlinje.submit2.network.repository.DetailRepositoryTeamPlayer
-import com.kotlinje.submit2.view.DetailTeamView
+import com.kotlinje.submit2.network.repository.DetailRepositoryPlayerDetail
+import com.kotlinje.submit2.view.DetailPlayerView
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import org.jetbrains.anko.coroutines.experimental.bg
@@ -14,21 +14,21 @@ import org.jetbrains.anko.coroutines.experimental.bg
 
 // add coruntines anko
 //submission 4
-class PresenterDetailTeam
-(private val view: DetailTeamView, private val detailRepository: DetailRepositoryTeamPlayer)
+class PresenterDetailPlayer
+(private val view: DetailPlayerView, private val detailRepository: DetailRepositoryPlayerDetail)
 {
 
 
-    fun getDetailTeam(idTeam: String) {
+    fun getDetailPlayer(idTeam: String) {
         view.showLoadingProgress()
-        detailRepository.getDetailTeam(idTeam, object : DetailRepositoryCallback<TeamResponse?> {
-            override fun onDataLoaded(data: TeamResponse?) {
+        detailRepository.getDetailPlayer(idTeam, object : DetailRepositoryCallback<ResponseDetailPlayer?> {
+            override fun onDataLoaded(data: ResponseDetailPlayer?) {
                 view.hideLoadingProgress()
                 async(UI){
 
-                  val dataImgAway = bg { data?.teams?.get(0) }
-                    println("data presenterdetail team :" +dataImgAway)
-                    view.showDetailTeam(dataImgAway.await())
+                  val dataDetailPlayer = bg { data?.players?.get(0) }
+                    println("data presenterdetail player :" +dataDetailPlayer)
+                    view.showDetailPlayer(dataDetailPlayer.await()!!)
                 }
             }
 

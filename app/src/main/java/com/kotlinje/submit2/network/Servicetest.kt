@@ -1,8 +1,7 @@
 package com.kotlinje.submit2.network
 
-import com.kotlinje.submit2.BuildConfig.TSDB_API_KEY
-import com.kotlinje.submit2.model.ModelTeam
-import com.kotlinje.submit2.model.ResponseTeam
+import com.kotlinje.submit2.model.event.ModelTeam
+import com.kotlinje.submit2.model.event.ResponseTeam
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -12,7 +11,7 @@ import retrofit2.http.Query
  */
 // add coruntines anko
 //submission 4
-interface ServiceGetListLiga {
+interface Servicetest {
 
     //end point liga last dan next
     @GET("api/v1/json/1/eventspastleague.php")
@@ -26,7 +25,6 @@ interface ServiceGetListLiga {
     @GET("api/v1/json/1/lookupteam.php")
     fun getImgTeam(@Query("id") idTeam:String?): Call<ModelTeam>
 
-    @GET("api/v1/json/1/searchevents.php?e=")
-    fun getSearchTeamEvent(@Query("id") idTeam:String?): Call<ModelTeam>
+
 
 }

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.kotlinje.submit2">
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"></uses-permission>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -14,16 +15,36 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activity.MainActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar1"
+
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.DetailActivity"
-            android:label="@string/detail_activity"
-            ></activity>
+        <activity
+            android:name=".activity.DetailLigaActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:label="@string/app_name"
+            android:name=".activity.SearchMatchViewActivity"
+            android:theme="@style/AppTheme.NoActionBar1" />
+        <activity
+            android:label="@string/app_name"
+            android:name=".activity.SearchTeamActivity"
+            android:theme="@style/AppTheme.NoActionBar1" />
+        <activity
+            android:label=""
+            android:name=".activity.DetailTeamActivity"
+            android:theme="@style/AppTheme.NoActionBar1" />
+        <activity
+            android:name=".activity.DetailPlayerActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

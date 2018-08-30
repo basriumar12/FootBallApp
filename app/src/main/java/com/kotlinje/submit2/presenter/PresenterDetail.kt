@@ -1,17 +1,13 @@
 package com.kotlinje.submit2.presenter
 
-import android.util.Log
-import com.kotlinje.submit2.model.ModelTeam
-import com.kotlinje.submit2.model.ResponseTeam
-import com.kotlinje.submit2.network.RetrofitInit
-import com.kotlinje.submit2.network.ServiceGetListLiga
+import com.kotlinje.submit2.model.event.ModelTeam
+import com.kotlinje.submit2.model.event.ResponseTeam
+import com.kotlinje.submit2.network.repository.DetailRepository
+import com.kotlinje.submit2.network.repository.DetailRepositoryCallback
 import com.kotlinje.submit2.view.DetailView
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import org.jetbrains.anko.coroutines.experimental.bg
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 /**
  * Created by User on 15/05/2018.
@@ -20,14 +16,89 @@ import retrofit2.Response
 // add coruntines anko
 //submission 4
 class PresenterDetail
-(private val view: DetailView)
+(private val view: DetailView, private val detailRepository: DetailRepository)
 {
 
-    // get liga
+    fun getMatchLast(idEvent: String) {
+        view.showLoadingProgress()
+        detailRepository.getLastMatch(idEvent, object : DetailRepositoryCallback<ResponseTeam?> {
+            override fun onDataLoaded(data: ResponseTeam?) {
+                view.hideLoadingProgress()
+                async(UI){
+
+                  val dataMatch = bg { data?.events?.get(0) }
+                    view.showEventLiga(dataMatch.await())
+                }
+            }
+
+            override fun onDataError() {
+                view.onDataError()
+                view.hideLoadingProgress()
+            }
+        })
+        view.hideLoadingProgress()
+    }
+
+    fun getImgHome(idTeam: String) {
+        view.showLoadingProgress()
+        detailRepository.getImgHome(idTeam, object : DetailRepositoryCallback<ModelTeam?> {
+            override fun onDataLoaded(data: ModelTeam?) {
+                view.hideLoadingProgress()
+                async(UI){
+
+                  val dataImgHome = bg { data?.teams?.get(0) }
+                    view.showHomeTeamImg(dataImgHome.await())
+                }
+            }
+
+            override fun onDataError() {
+                view.onDataError()
+                view.hideLoadingProgress()
+            }
+        })
+        view.hideLoadingProgress()
+    }
+    fun getImgAway(idTeam: String) {
+        view.showLoadingProgress()
+        detailRepository.getImgAway(idTeam, object : DetailRepositoryCallback<ModelTeam?> {
+            override fun onDataLoaded(data: ModelTeam?) {
+                view.hideLoadingProgress()
+                async(UI){
+
+                  val dataImgAway = bg { data?.teams?.get(0) }
+                    view.showAwayTeamImg(dataImgAway.await())
+                }
+            }
+
+            override fun onDataError() {
+                view.onDataError()
+                view.hideLoadingProgress()
+            }
+        })
+        view.hideLoadingProgress()
+    }
+    fun forTesting(idEvent: String) {
+        view.showLoadingProgress()
+        detailRepository.getImgAway(idEvent, object : DetailRepositoryCallback<ModelTeam?> {
+            override fun onDataLoaded(data: ModelTeam?) {
+
+
+            }
+
+            override fun onDataError() {
+                view.onDataError()
+                view.hideLoadingProgress()
+            }
+        })
+
+    }
+
+
+/*    // get liga
     fun getLastLiga(idEvent:String){
         view.showLoadingProgress()
 
-        val service: ServiceGetListLiga = RetrofitInit.getUrl()
+        val service: Servicetest = RetrofitInit.getUrl()
 
         service.getDataEachTeam(idEvent).enqueue(object : Callback<ResponseTeam> {
             override fun onResponse(call: Call<ResponseTeam>?, response: Response<ResponseTeam>?) {
@@ -54,7 +125,7 @@ class PresenterDetail
     //get Home Img
     fun getHomeimg(idTeam: String?){
         view.showLoadingProgress()
-        val service:ServiceGetListLiga = RetrofitInit.getUrl()
+        val service:Servicetest = RetrofitInit.getUrl()
         service.getImgTeam(idTeam).enqueue(object : Callback<ModelTeam> {
             override fun onResponse(call: Call<ModelTeam>?, response: Response<ModelTeam>?) {
                 Log.d("Tag","Data Respon img Home"+response?.body().toString())
@@ -79,7 +150,7 @@ class PresenterDetail
     fun getAwayImg(idTeam: String?){
         view.showLoadingProgress()
 
-        val service: ServiceGetListLiga = RetrofitInit.getUrl()
+        val service: Servicetest = RetrofitInit.getUrl()
         service.getImgTeam(idTeam).enqueue(object : Callback<ModelTeam> {
             override fun onResponse(call: Call<ModelTeam>?, response: Response<ModelTeam>?) {
                 Log.d("Tag","Data Respon img away"+response?.body().toString())
@@ -98,7 +169,7 @@ class PresenterDetail
 
         })
 
-    }
+    }*/
 
 
 }

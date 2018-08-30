@@ -2,12 +2,14 @@ package com.kotlinje.submit2.presenter
 
 import android.util.Log
 import com.kotlinje.submit2.model.event.ResponseTeam
+import com.kotlinje.submit2.model.liga.ResponseLiga
+import com.kotlinje.submit2.model.liga.TeamsItem
 import com.kotlinje.submit2.model.search.EventItem
 import com.kotlinje.submit2.model.search.ResponseSearch
-import com.kotlinje.submit2.network.repository.MatchRepository
-import com.kotlinje.submit2.network.repository.MatchRepositoryCallback
-import com.kotlinje.submit2.network.repository.SearchRepositoryCallback
+import com.kotlinje.submit2.model.search.ResponseSearchTeam
+import com.kotlinje.submit2.network.repository.*
 import com.kotlinje.submit2.view.SearchMatchView
+import com.kotlinje.submit2.view.SearchTeamView
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import org.jetbrains.anko.coroutines.experimental.bg
@@ -17,24 +19,24 @@ import org.jetbrains.anko.coroutines.experimental.bg
  */
 // add coruntines anko
 //submission 4
-class PresenterSearch
-(private val view  : SearchMatchView, private val matchRepository: MatchRepository)
+class PresenterSearchTeam
+(private val view  : SearchTeamView, private val matchRepository: MatchRepository)
 {
 
 
-    fun getMatchSearch(id: String) {
+    fun getTeamsSearch(id: String) {
         view.showLoadingProgress()
-        matchRepository.getSearchMatch(id, object : SearchRepositoryCallback<ResponseSearch?> {
-            override fun onDataLoaded(data: ResponseSearch?) {
-               // view.onDataLoaded(data)
-                view.hideLoadingProgress()
+        matchRepository.getSearchTeams(id, object : SearchTeamRepositoryCallback<ResponseSearchTeam?> {
+            override fun onDataLoaded(data: ResponseSearchTeam?) {
+                view.onDataLoaded(data)
+
                 async(UI){
 
-                    val dataMatch = bg { data?.event }
-                    Log.e("data","coba 2"+dataMatch)
+                    val dataMatch = bg { data?.teams }
+                    Log.e("data","coba teams : "+dataMatch)
                     //view.showEventList(dataMatch.await())
                     view.hideLoadingProgress()
-                    view.showEventList(dataMatch.await() as List<EventItem>?)
+                    view.showEventList(dataMatch.await() as List<com.kotlinje.submit2.model.search.TeamsItem>?)
                 }
 
             }
@@ -46,7 +48,6 @@ class PresenterSearch
         })
         view.hideLoadingProgress()
     }
-
 
 
 }

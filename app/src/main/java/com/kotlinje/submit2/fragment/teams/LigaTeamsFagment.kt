@@ -1,4 +1,4 @@
-package com.kotlinje.submit2.fragment
+package com.kotlinje.submit2.fragment.teams
 
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
@@ -11,8 +11,11 @@ import android.view.ViewGroup
 import android.widget.*
 import com.kotlinje.submit2.R
 import com.kotlinje.submit2.R.array.league
-import com.kotlinje.submit2.activity.SearchMatchViewActivity
+import com.kotlinje.submit2.activity.DetailLigaActivity
+import com.kotlinje.submit2.activity.DetailTeamActivity
+import com.kotlinje.submit2.activity.SearchTeamActivity
 import com.kotlinje.submit2.activity.SearchTeamViewActivity
+import com.kotlinje.submit2.adapter.AdapterTeams
 import com.kotlinje.submit2.adapter.TeamsAdapter
 import com.kotlinje.submit2.model.liga.ResponseLiga
 import com.kotlinje.submit2.model.liga.TeamsItem
@@ -21,6 +24,7 @@ import com.kotlinje.submit2.presenter.PresenterTeams
 import com.kotlinje.submit2.utility.invisible
 import com.kotlinje.submit2.utility.visible
 import com.kotlinje.submit2.view.LigaTeamsSearchVIiew
+import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.support.v4.ctx
 import org.jetbrains.anko.support.v4.startActivity
 
@@ -30,47 +34,42 @@ import org.jetbrains.anko.support.v4.startActivity
 class LigaTeamsFagment() : android.support.v4.app.Fragment(), LigaTeamsSearchVIiew {
 
 
+    override fun onDataLoaded(data: ResponseLiga?) {
 
- override fun onDataLoaded(data: ResponseLiga?) {
-    // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
- }
-
-
- override fun onDataError() {
- }
-
- override fun showLoadingProgress() {
-     progressBar.visible()
- }
-
- override fun hideLoadingProgress() {
-     progressBar.invisible()
- }
+    }
 
 
+    override fun onDataError() {
+    }
 
- override fun showEventList(data: List<TeamsItem>?) {
+    override fun showLoadingProgress() {
+        progressBar.visible()
+    }
 
-     teams.clear()
-     if (data != null) {
-         teams.addAll(data)
+    override fun hideLoadingProgress() {
+        progressBar.invisible()
+    }
 
-         Log.d("tag", "data teams :" + data)
 
-     }
-     adapterList?.notifyDataSetChanged()
+    override fun showEventList(data: List<TeamsItem>?) {
 
- }
+        teams.clear()
+        if (data != null) {
+            teams.addAll(data)
 
-    var adapterList: TeamsAdapter? = null
+        }
+        adapterList?.notifyDataSetChanged()
+
+    }
+
+    var adapterList: AdapterTeams? = null
     private lateinit var progressBar: ProgressBar
-    private lateinit var swipeRefresh: SwipeRefreshLayout
     var teams: MutableList<TeamsItem> = mutableListOf()
     lateinit var spinnerTeams: Spinner
     lateinit var teamsName: String
-    lateinit var imgSearchMatch : ImageView
-
+    lateinit var imgSearchMatch: ImageView
     var presenter: PresenterTeams? = null
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val v: View = inflater.inflate(R.layout.fragment_teams, container, false)
         spinnerTeams = v.findViewById(R.id.id_teams_spinner)
@@ -78,11 +77,10 @@ class LigaTeamsFagment() : android.support.v4.app.Fragment(), LigaTeamsSearchVIi
         val spinnerAdapter = ArrayAdapter(ctx, android.R.layout.simple_spinner_dropdown_item, spinnerItems)
         spinnerTeams.adapter = spinnerAdapter
         progressBar = v.findViewById(R.id.progressBar_teams)
-
         imgSearchMatch = v.findViewById(R.id.img_search_match)
         imgSearchMatch.setOnClickListener {
 
-            startActivity<SearchTeamViewActivity>()
+            startActivity<SearchTeamActivity>()
         }
 
         presenter = PresenterTeams(this, MatchRepository())
@@ -90,32 +88,21 @@ class LigaTeamsFagment() : android.support.v4.app.Fragment(), LigaTeamsSearchVIi
         recyclerView.layoutManager = LinearLayoutManager(activity)
 
         progressBar.visible()
-        adapterList = TeamsAdapter(teams) {}
-        recyclerView.adapter = adapterList
-
-
-
-
-        spinnerTeams.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-
-
-            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                teamsName = spinnerTeams.selectedItem.toString()
-
-                Log.e("Tag", "spinner :" + teamsName)
-                presenter?.getLigaTeamsSearch(teamsName)
-            }
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-                //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
+        adapterList = AdapterTeams(teams) {
+            startActivity<DetailTeamActivity>("idTeam" to "${it.idTeam}")
 
         }
+        recyclerView.adapter = adapterList
+        spinnerTeams.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
 
+                teamsName = spinnerTeams.selectedItem.toString()
+                presenter?.getLigaTeamsSearch(teamsName)
+            }
 
-        /*  swipeRefresh.onRefresh {
-              presenter?.getLigaTeamsSearch(teamsName)
-          }*/
-
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+            }
+        }
 
         return v
     }

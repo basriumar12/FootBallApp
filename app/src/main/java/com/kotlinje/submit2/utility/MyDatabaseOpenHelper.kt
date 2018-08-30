@@ -2,7 +2,8 @@ package com.kotlinje.submit2.utility
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
-import com.kotlinje.submit2.model.ModelFavorite
+import com.kotlinje.submit2.model.event.ModelFavorite
+import com.kotlinje.submit2.model.event.ModelFavoriteTeam
 import org.jetbrains.anko.db.*
 
 /**
@@ -41,10 +42,18 @@ class MyDatabaseOpenHelper (context: Context): ManagedSQLiteOpenHelper
                 ModelFavorite.SCORE_HOME to TEXT,
                 ModelFavorite.SCORE_AWAY to TEXT)
 
+        db?.createTable(ModelFavoriteTeam.TABLE_FAVORITE_TEAM, true,
+                ModelFavoriteTeam.ID to INTEGER + PRIMARY_KEY + AUTOINCREMENT,
+                ModelFavoriteTeam.TEAM_ID to TEXT + UNIQUE,
+                ModelFavoriteTeam.TEAM_NAME to TEXT + UNIQUE,
+                ModelFavoriteTeam.TEAM_IMAGE to TEXT + UNIQUE
+                )
+
     }
     //upgrade db
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
         db?.dropTable(ModelFavorite.TABLE_FAVORITE,true)
+        db?.dropTable(ModelFavoriteTeam.TABLE_FAVORITE_TEAM,true)
     }
 
 }

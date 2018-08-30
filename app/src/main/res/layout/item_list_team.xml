@@ -9,7 +9,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/img_team_player"
+            android:id="@+id/img_team_favorite"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="left|center"
@@ -20,21 +20,13 @@
 
 
     <TextView
-        android:id="@+id/tv_name_player"
+        android:id="@+id/tv_name_team_favorite"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="left|center"
         android:layout_marginLeft="10dp"
         android:layout_weight="1"
-        android:text="Name Player" />
+        android:text="Name Team" />
 
 
-    <TextView
-
-        android:id="@+id/tv_posisition_player"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right|center"
-        android:layout_weight="1"
-        android:text="Posisi" />
 </LinearLayout>

@@ -1,11 +1,11 @@
 package com.kotlinje.submit2.presenter
 
 import android.util.Log
-import com.kotlinje.submit2.model.search.EventItem
-import com.kotlinje.submit2.model.search.ResponseSearch
+import com.kotlinje.submit2.model.liga.ResponseLiga
+import com.kotlinje.submit2.model.liga.TeamsItem
 import com.kotlinje.submit2.network.repository.MatchRepository
-import com.kotlinje.submit2.network.repository.MatchRepositoryCallback
-import com.kotlinje.submit2.view.SearchMatchView
+import com.kotlinje.submit2.network.repository.LigaTeamsRepositoryCallback
+import com.kotlinje.submit2.view.LigaTeamsSearchVIiew
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import org.jetbrains.anko.coroutines.experimental.bg
@@ -15,23 +15,24 @@ import org.jetbrains.anko.coroutines.experimental.bg
  */
 // add coruntines anko
 //submission 4
-class PresenterSearch
-(private val view  : SearchMatchView, private val matchRepository: MatchRepository)
+class PresenterTeams
+(private val view  : LigaTeamsSearchVIiew, private val matchRepository: MatchRepository)
 {
 
 
-    fun getMatchSearch(id: String) {
+    fun getLigaTeamsSearch(id: String) {
         view.showLoadingProgress()
-        matchRepository.getSearchMatch(id, object : MatchRepositoryCallback<ResponseSearch?> {
-            override fun onDataLoaded(data: ResponseSearch?) {
-                view.onDataLoaded(data)
-                view.hideLoadingProgress()
+        matchRepository.getSearchLigaTeams(id, object : LigaTeamsRepositoryCallback<ResponseLiga?> {
+            override fun onDataLoaded(data: ResponseLiga?) {
+              view.onDataLoaded(data)
+
                 async(UI){
 
-                    val dataMatch = bg { data?.event }
-                    Log.e("data","coba 2"+dataMatch)
+                    val dataMatch = bg { data?.teams }
+                    Log.e("data","coba teams : "+dataMatch)
                     //view.showEventList(dataMatch.await())
-                    view.showEventList(dataMatch.await() as List<EventItem>?)
+                    view.hideLoadingProgress()
+                    view.showEventList(dataMatch.await() as List<TeamsItem>?)
                 }
 
             }

@@ -1,4 +1,4 @@
-package com.kotlinje.submit2.model
+package com.kotlinje.submit2.model.event
 
 import com.google.gson.annotations.SerializedName
 

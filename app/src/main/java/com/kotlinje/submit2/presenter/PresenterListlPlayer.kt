@@ -15,7 +15,7 @@ import org.jetbrains.anko.coroutines.experimental.bg
 
 // add coruntines anko
 //submission 4
-class PresenterDetailPlayer
+class PresenterListlPlayer
 (private val view: DetailListPlayerView, private val detailRepository: DetailRepositoryPlayer)
 {
 

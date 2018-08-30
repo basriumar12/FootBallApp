@@ -27,20 +27,16 @@ import com.kotlinje.submit2.utility.database
 import org.jetbrains.anko.db.classParser
 import org.jetbrains.anko.db.delete
 import org.jetbrains.anko.db.select
-// add coruntines anko
-//submission 4
-//pada detail activity menampilkan 2 tim dan benderanya
-//selain itu menampilkan menu item untuk menambahkan team favorite
-class DetailActivity : AppCompatActivity(), DetailView {
+class DetailLigaActivity : AppCompatActivity(), DetailView {
     override fun onDataLoaded(data: ModelTeam?) {
-       // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        showToastDetail("test data : $data")
     }
 
     override fun onDataError() {
-       // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        showToastDetail("test data error")
     }
 
-    private fun addToFavorite(){
+    private fun addToFavorite() {
 
 
         try {
@@ -57,92 +53,82 @@ class DetailActivity : AppCompatActivity(), DetailView {
 
             showToastDetail("data berhasil disimpan")
         } catch (e: SQLiteConstraintException) {
-            showToastDetail("Error Insert"+e.localizedMessage)
+            showToastDetail("Error Insert" + e.localizedMessage)
 
         }
     }
+
     // remove berfungsi untuk delete data
-    private fun removeFromFavorite(){
+    private fun removeFromFavorite() {
         try {
             database.use {
-             //delete data dari tabel favorite berdasarkan id yang di pilih
+
                 delete(ModelFavorite.TABLE_FAVORITE,
-                        "(EVENT_ID = {id})","id" to idEvent)
-//                delete(EventFavorite.TABLE_FAVORITE,"(EVENT_ID = {id})","id" to )
+                        "(EVENT_ID = {id})", "id" to idEvent)
+
             }
-                showToastDetail("hapus dari favorit")
+            showToastDetail("hapus dari favorit")
         } catch (e: SQLiteConstraintException) {
-            showToastDetail("error hapus :"+e.localizedMessage)
+            showToastDetail("error hapus :" + e.localizedMessage)
 //
         }
     }
+
     //
-    private fun setFavorite(isFav:Boolean){
-        if(isFav){
+    private fun setFavorite(isFav: Boolean) {
+        if (isFav) {
 
             menuItemDel?.getItem(0)?.icon =
-                    ContextCompat.getDrawable(this,R.drawable.ic_favorite_black_24dp)
-        }else{
+                    ContextCompat.getDrawable(this, R.drawable.ic_favorite_black_24dp)
+        } else {
             menuItemDel?.getItem(0)?.icon =
-                    ContextCompat.getDrawable(this,R.drawable.ic_favorite_border_black_24dp)
+                    ContextCompat.getDrawable(this, R.drawable.ic_favorite_border_black_24dp)
         }
     }
-     //mengecek keadaan favorit
-    // ketika favorite nol data maka akan di tampilkan gambar border black
-    // dan jika favorite ada data makan akan di tampilkan gambar pada menu item adalah black
-    private fun cekFavor(){
+
+    private fun cekFavor() {
         try {
             database.use {
                 //query select id
                 val hasilData = select(ModelFavorite.TABLE_FAVORITE)
-                        .whereArgs("(EVENT_ID = {id})","id" to idEvent)
+                        .whereArgs("(EVENT_ID = {id})", "id" to idEvent)
                 val eventFavoriteTeam = hasilData.parseList(classParser<ModelFavorite>())
 
-
-                if(!eventFavoriteTeam.isEmpty()){
-                    isEvenFavor = true
-                }else{
-                    isEvenFavor = false
-                }
+                isEvenFavor = !eventFavoriteTeam.isEmpty()
                 //set favorite match team
                 setFavorite(isEvenFavor)
             }
 
         } catch (e: SQLiteConstraintException) {
-            showToastDetail("Error Cek Favorit"+e.localizedMessage)
+            showToastDetail("Error Cek Favorit $e.localizedMessage")
         }
     }
 
     override fun showHomeTeamImg(team: ModelTeamItem?) {
-        var imgHome = team?.strTeamBadge
+        val imgHome = team?.strTeamBadge
         Glide.with(this).load(imgHome).into(imgHomeTeam)
-
-        // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun showAwayTeamImg(team: ModelTeamItem?) {
-        var imgAway = team?.strTeamBadge
+        val imgAway = team?.strTeamBadge
         Glide.with(this).load(imgAway).into(imgAwayTeam)
-        // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     override fun showLoadingProgress() {
         load?.visibility = View.VISIBLE
-        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     override fun hideLoadingProgress() {
         load?.visibility = View.INVISIBLE
-        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun showToastDetail(message: String?) {
         toast(message.toString())
-        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    //create method untuk muncul menu
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_detai_activity, menu)
         menuItemDel = menu
         setFavorite(isEvenFavor)
@@ -150,18 +136,18 @@ class DetailActivity : AppCompatActivity(), DetailView {
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return when(item?.itemId){
+        return when (item?.itemId) {
             android.R.id.home -> {
                 finish()
                 true
             }
-            R.id.favoriteteam ->{
+            R.id.favoriteteam -> {
                 // kondisi pada menu item
                 // remove / delete
-                if (isEvenFavor){
+                if (isEvenFavor) {
                     removeFromFavorite()
                     isEvenFavor = false
-                }else{
+                } else {
                     // add to favorite
                     addToFavorite()
                     isEvenFavor = true
@@ -171,36 +157,32 @@ class DetailActivity : AppCompatActivity(), DetailView {
                 setFavorite(isEvenFavor)
                 true
             }
-            else ->super.onOptionsItemSelected(item)
+            else -> super.onOptionsItemSelected(item)
 
         }
     }
+
     //show event liga
     override fun showEventLiga(event: EventLiga?) {
         eventLiga = event
         idHomeTeam = event?.idHomeTeam
         idAwayTeam = event?.idAwayTeam
-        Log.d("home","test :"+idHomeTeam+" "+idAwayTeam)
         textScoreHomeTeam.text = event?.intHomeScore
         textScoreAwayTeam.text = event?.intAwayScore
         textGoalHomeTeam.text = event?.strHomeGoalDetails
         tvGoalAwayTeam.text = event?.strAwayGoalDetails
 
-        idHome  = idHomeTeam
+        idHome = idHomeTeam
         idAway = idAwayTeam
-        Log.d("home","team1 :"+idHome+" "+idAway)
-           present?.getImgHome(idHome.toString())
-         present?.getImgAway(idAway.toString())
+        present?.getImgHome(idHome.toString())
+        present?.getImgAway(idAway.toString())
 
-      /*  present?.getImgHome(idHome.toString())
-        present?.getImgAway(idAway.toString())*/
-        // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+     }
 
     //variabel
-    var idHome : String? = null
-    var idAway : String? = null
-    private var  isEvenFavor: Boolean = false
+    var idHome: String? = null
+    var idAway: String? = null
+    private var isEvenFavor: Boolean = false
     var load: ProgressBar? = null
     var present: PresenterDetail? = null
     var idHomeTeam: String? = null
@@ -235,8 +217,6 @@ class DetailActivity : AppCompatActivity(), DetailView {
         // pada oncrete method dicek dulu favoritenya,
         // sehingga pada menu item icon akan terganti
         cekFavor();
-
-
 
 
     }

@@ -1,5 +1,6 @@
 package com.kotlinje.submit2.network.repository
 
+import com.kotlinje.submit2.model.detail_player.ResponseDetailPlayer
 import com.kotlinje.submit2.model.player.ResponsePlayer
 import com.kotlinje.submit2.network.newnetwork.MyRetrofit
 import com.kotlinje.submit2.network.newnetwork.ServiceGetListLiga
@@ -9,27 +10,27 @@ import retrofit2.Response
 /**
  * Created by User on 27/05/2018.
  */
-class DetailRepositoryPlayer {
+class DetailRepositoryPlayerDetail {
 
 
-    fun getDetailListPlayer (id :String, callback: DetailRepositoryCallback<ResponsePlayer?>){
+    fun getDetailPlayer (id :String, callback: DetailRepositoryCallback<ResponseDetailPlayer?>){
         MyRetrofit
                 .createService(ServiceGetListLiga::class.java)
-                .getTeamPlayer(id)
-                .enqueue(object : retrofit2.Callback<ResponsePlayer> {
-                    override fun onFailure(call: Call<ResponsePlayer>?, t: Throwable?) {
+                .getDetailPlayer(id)
+                .enqueue(object : retrofit2.Callback<ResponseDetailPlayer> {
+                    override fun onFailure(call: Call<ResponseDetailPlayer>?, t: Throwable?) {
                         callback.onDataError()
-                        println("data error team player :"+t.toString())
+                        println("data error detail player :"+t.toString())
                         //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
                     }
 
-                    override fun onResponse(call: Call<ResponsePlayer>?, response: Response<ResponsePlayer>?) {
+                    override fun onResponse(call: Call<ResponseDetailPlayer>?, response: Response<ResponseDetailPlayer>?) {
                    //     TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
                     response.let {
 
                         if (it!!.isSuccessful){
                             callback.onDataLoaded(it.body())
-                            println("Show detail team player :"+it.body())
+                            println("Show  detail player :"+it.body())
 
 
                         } else{

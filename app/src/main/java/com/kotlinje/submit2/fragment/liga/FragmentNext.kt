@@ -23,7 +23,7 @@ import org.jetbrains.anko.support.v4.toast
 /**
  * Created by User on 15/05/2018.
  */
-class FragmentTextNext() : android.support.v4.app.Fragment(), MainView {
+class FragmentNext() : android.support.v4.app.Fragment(), MainView {
     override fun onDataLoaded(data: ResponseTeam?) {
     }
 
@@ -34,8 +34,6 @@ class FragmentTextNext() : android.support.v4.app.Fragment(), MainView {
     var present: PresenterMain? = null
     var adapterList: AdapterListData? = null
     var liga: MutableList<EventLiga> = mutableListOf()
-   // var ligaID: String = "4328"
-    //var tvLastLiga: String = "Last Liga"
     var tvLiga: TextView? = null
     lateinit var spinnerTeams: Spinner
     lateinit var teamsName: String
@@ -117,8 +115,6 @@ class FragmentTextNext() : android.support.v4.app.Fragment(), MainView {
         liga.clear()
         if (data != null) {
             liga.addAll(data)
-            //tvLiga?.text = tvLastLiga
-            Log.d("tag", "data last :" + data)
 
         }
         adapterList?.notifyDataSetChanged()

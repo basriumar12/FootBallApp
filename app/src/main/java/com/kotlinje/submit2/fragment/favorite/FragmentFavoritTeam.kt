@@ -8,8 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import com.kotlinje.submit2.R
 import com.kotlinje.submit2.activity.DetailLigaActivity
+import com.kotlinje.submit2.activity.DetailTeamActivity
 import com.kotlinje.submit2.adapter.AdapterFavoriteMatch
+import com.kotlinje.submit2.adapter.AdapterFavoriteTeam
 import com.kotlinje.submit2.model.event.ModelFavorite
+import com.kotlinje.submit2.model.event.ModelFavoriteTeam
 import com.kotlinje.submit2.utility.database
 import org.jetbrains.anko.db.rowParser
 import org.jetbrains.anko.db.select
@@ -20,9 +23,9 @@ import org.jetbrains.anko.support.v4.startActivity
  */
 // add coruntines anko
 //submission 4
-class FragmentFavoritMatch : android.support.v4.app.Fragment() {
-    var evenFavor: MutableList<ModelFavorite> = mutableListOf()
-    lateinit var adapterFavoriteMatch: AdapterFavoriteMatch
+class FragmentFavoritTeam : android.support.v4.app.Fragment() {
+    var evenFavor: MutableList<ModelFavoriteTeam> = mutableListOf()
+    lateinit var adapterFavoriteTeam: AdapterFavoriteTeam
     lateinit var rv : RecyclerView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -34,12 +37,12 @@ class FragmentFavoritMatch : android.support.v4.app.Fragment() {
         rv.layoutManager = LinearLayoutManager(v.context)
 
         //event klik
-        adapterFavoriteMatch = AdapterFavoriteMatch(evenFavor) {
-            startActivity<DetailLigaActivity>("idEvent" to "${it.eventId}")
+        adapterFavoriteTeam = AdapterFavoriteTeam(evenFavor) {
+            startActivity<DetailTeamActivity>("idTeam" to "${it.teamId}")
         }
 
         //set adapter
-        rv.adapter = adapterFavoriteMatch
+        rv.adapter = adapterFavoriteTeam
         showFavoriteTeam()
 
 
@@ -48,22 +51,20 @@ class FragmentFavoritMatch : android.support.v4.app.Fragment() {
     }
     //show team favorte
     private fun showFavoriteTeam() {
-       // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         activity?.database?.use {
             //buat object hasil
-            val hasilData = select(ModelFavorite.TABLE_FAVORITE)
+            val hasilData = select(ModelFavoriteTeam.TABLE_FAVORITE_TEAM)
             val  favor = hasilData.parseList(parser = rowParser{
-                id:Long?, evenId :String?, evenTgl:String?,
-                        homeName:String?,awayName:String?,
-                        scoreHome:String?,scoreAway:String?->
-                ModelFavorite(id, evenId, evenTgl, homeName, awayName, scoreHome, scoreAway)
+                id:Long?, teamId :String?, teamName:String?,
+                strImage:String?
+                ->
+                ModelFavoriteTeam(id, teamId, teamName, strImage)
 
             })
             //add all favorite
             evenFavor.addAll(favor)
             //set datachanged
-            adapterFavoriteMatch.notifyDataSetChanged()
+            adapterFavoriteTeam.notifyDataSetChanged()
         }
-
     }
 }

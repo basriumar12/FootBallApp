@@ -5,9 +5,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import com.kotlinje.submit2.R
 import com.kotlinje.submit2.model.event.ModelFavorite
+import com.kotlinje.submit2.model.event.ModelFavoriteTeam
 import org.jetbrains.anko.find
 import org.jetbrains.anko.sdk25.coroutines.onClick
 
@@ -16,43 +19,36 @@ import org.jetbrains.anko.sdk25.coroutines.onClick
  */
 // add coruntines anko
 //submission 4
-class AdapterFavoriteMatch(private val evenFavor:List<ModelFavorite>,
-                           val listiner:(ModelFavorite)-> Unit):
-        RecyclerView.Adapter<AdapterFavoriteMatch.ViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdapterFavoriteMatch.ViewHolder {
-        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        val v  : View = LayoutInflater.from(parent.context).inflate(R.layout.item_list,parent,false)
-        return AdapterFavoriteMatch.ViewHolder(v)
+class AdapterFavoriteTeam(private val evenFavor:List<ModelFavoriteTeam>,
+                          val listiner:(ModelFavoriteTeam)-> Unit):
+        RecyclerView.Adapter<AdapterFavoriteTeam.ViewHolder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdapterFavoriteTeam.ViewHolder {
+        val v  : View = LayoutInflater.from(parent.context).inflate(R.layout.item_list_team,parent,false)
+        return AdapterFavoriteTeam.ViewHolder(v)
     }
 
     override fun getItemCount(): Int = evenFavor.size
 
 
-    override fun onBindViewHolder(holder: AdapterFavoriteMatch.ViewHolder, position: Int) {
-    //    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun onBindViewHolder(holder: AdapterFavoriteTeam.ViewHolder, position: Int) {
            holder.bindItem(evenFavor[position],listiner)
-        }
+        var getImageTeam = evenFavor[position].strImage
+        println("get gambar in adapter :"+getImageTeam)
+        Glide.with(holder.imgTeamFavorite.context).load(getImageTeam).into(holder.imgTeamFavorite)
+
+    }
 
 
     //kelas viewholder
     class ViewHolder (view : View): RecyclerView.ViewHolder(view){
-        val date: TextView = view.find(R.id.event_date)
-        val teamHome: TextView = view.find(R.id.home_team)
-        val teamAway: TextView = view.find(R.id.away_team)
-        val scoreHome: TextView? = view.find(R.id.home_team_score)
-        val scoreAway: TextView? = view.find(R.id.away_team_score)
+        val tvNameTeamFavorite: TextView = view.find(R.id.tv_name_team_favorite)
+        val imgTeamFavorite : ImageView = view.find(R.id.img_team_favorite)
 
         //bind object
-        fun bindItem(event: ModelFavorite, listiner: (ModelFavorite) -> Unit) {
-            date.text = event.eventDate
-            teamHome.text = event.strHomeName
-            teamAway.text = event.strAwayName
-            scoreHome?.text = event.strScoreHome
-            scoreAway?.text = event.strScoreAway
-            Log.d("TAG","Adapter cek :" +event.eventDate)
-            Log.d("TAG","Adapter cek :" +event.eventId)
+        fun bindItem(event: ModelFavoriteTeam, listiner: (ModelFavoriteTeam) -> Unit) {
 
-            itemView.onClick { listiner(event) }
+            tvNameTeamFavorite.text = event.teamName
+                      itemView.onClick { listiner(event) }
         }
     }
 }

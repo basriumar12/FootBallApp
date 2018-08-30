@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.kotlinje.submit2.activity.DetailActivity">
+    tools:context="com.kotlinje.submit2.activity.DetailLigaActivity">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

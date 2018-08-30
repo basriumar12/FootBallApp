@@ -1,4 +1,4 @@
-package com.kotlinje.submit2.model
+package com.kotlinje.submit2.model.event
 
 /**
  * Created by User on 19/05/2018.

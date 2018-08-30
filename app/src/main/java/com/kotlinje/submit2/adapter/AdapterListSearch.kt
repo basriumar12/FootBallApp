@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.kotlinje.submit2.R
-import com.kotlinje.submit2.model.EventLiga
+import com.kotlinje.submit2.model.search.EventItem
 import org.jetbrains.anko.find
 import org.jetbrains.anko.sdk25.coroutines.onClick
 
@@ -16,22 +16,18 @@ import org.jetbrains.anko.sdk25.coroutines.onClick
  */
 // add coruntines anko
 //submission 4
-class AdapterListData
-(private val events:List<EventLiga>, private val listener :(EventLiga)->Unit ) : RecyclerView.Adapter<AdapterListData.LastMatchViewHolder>()
-
-{
+class AdapterListSearch
+(private val events: List<EventItem>, private val listener: (EventItem) -> Unit) : RecyclerView.Adapter<AdapterListSearch.LastMatchViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LastMatchViewHolder {
-        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        val v  : View =LayoutInflater.from(parent.context).inflate(R.layout.item_list,parent,false)
+        val v: View = LayoutInflater.from(parent.context).inflate(R.layout.item_list, parent, false)
         return LastMatchViewHolder(v)
 
     }
 
     override fun getItemCount(): Int = events.size
 
-    override fun onBindViewHolder(holder:LastMatchViewHolder, position: Int) {
-       // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        holder.bindItem(events[position],listener)
+    override fun onBindViewHolder(holder: LastMatchViewHolder, position: Int) {
+        holder.bindItem(events[position], listener)
     }
 
 
@@ -44,15 +40,12 @@ class AdapterListData
         val scoreAway: TextView? = view.find(R.id.away_team_score)
 
 
-        fun bindItem(event: EventLiga, listener: (EventLiga) -> Unit) {
-            date.text = event.strDate
-           teamHome.text = event.strHomeTeam
-            teamAway.text = event.strAwayTeam
-            scoreHome?.text = event.intHomeScore
-            scoreAway?.text = event.intAwayScore
-            Log.d("TAG","Adapter cek :" +event.strDate)
-            Log.d("TAG","Adapter cek :" +event.strAwayTeam)
-
+        fun bindItem(event: EventItem, listener: (EventItem) -> Unit) {
+            date.text = event.strDate.toString()
+            teamHome.text = event.strHomeTeam.toString()
+            teamAway.text = event.strAwayTeam.toString()
+            scoreHome?.text = event.intHomeScore.toString()
+            scoreAway?.text = event.intAwayScore.toString()
             itemView.onClick { listener(event) }
         }
     }

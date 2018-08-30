@@ -6,23 +6,31 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import com.kotlinje.submit2.R
-import com.kotlinje.submit2.R.menu.navigation
-import com.kotlinje.submit2.fragment.FragmentFavorit
-import com.kotlinje.submit2.fragment.FragmentLast
-import com.kotlinje.submit2.fragment.FragmentNext
+import com.kotlinje.submit2.fragment.favorite.FragmentFavoritMatch
+import com.kotlinje.submit2.fragment.liga.MatchFragment
+import com.kotlinje.submit2.fragment.teams.HomeDetailTeamFragment
+import com.kotlinje.submit2.fragment.teams.LigaTeamsFagment
+import com.kotlinje.submit2.model.event.EventLiga
+import com.kotlinje.submit2.model.event.ResponseTeam
+import com.kotlinje.submit2.network.repository.MatchRepository
+import com.kotlinje.submit2.presenter.PresenterMain
+import com.kotlinje.submit2.view.MainView
 import kotlinx.android.synthetic.main.activity_main.*
 // add coruntines anko
 //submission 4
 class MainActivity : AppCompatActivity() {
 
+    private var menuItemDel: Menu? = null
+    var present : PresenterMain? =null
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         //show fragment home
         val mgr = supportFragmentManager
         mgr.beginTransaction()
-                .add(R.id.container,FragmentLast())
+                .add(R.id.container, MatchFragment())
                 .commit()
         //get konfisi fragment
         navigation_buttom.setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener {
@@ -30,16 +38,16 @@ class MainActivity : AppCompatActivity() {
             item -> var fragment: Fragment?=null
             when (item.itemId){
                 R.id.nav_last_liga -> {
-                    fragment = FragmentLast()
+                    fragment = MatchFragment()
                     showFragment(fragment)
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.nav_next_liga -> {
-                    fragment = FragmentNext()
+                    fragment = LigaTeamsFagment()
                     showFragment(fragment)
                     return@OnNavigationItemSelectedListener true
                 }R.id.nav_favorite-> {
-                    fragment = FragmentFavorit()
+                    fragment = HomeDetailTeamFragment()
                     showFragment(fragment)
                     return@OnNavigationItemSelectedListener true
                 }
@@ -55,5 +63,6 @@ class MainActivity : AppCompatActivity() {
         mgr.beginTransaction().replace(R.id.container, fragment).commit()
 
     }
+
 
 }

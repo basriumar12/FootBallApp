@@ -1,10 +1,9 @@
 package com.kotlinje.submit2.presenter
 
-import com.kotlinje.submit2.model.event.ModelTeam
 import com.kotlinje.submit2.model.team.TeamResponse
 import com.kotlinje.submit2.network.repository.DetailRepositoryCallback
 import com.kotlinje.submit2.network.repository.DetailRepositoryTeamPlayer
-import com.kotlinje.submit2.view.DetailPlayerView
+import com.kotlinje.submit2.view.DetailTeamView
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import org.jetbrains.anko.coroutines.experimental.bg
@@ -15,8 +14,8 @@ import org.jetbrains.anko.coroutines.experimental.bg
 
 // add coruntines anko
 //submission 4
-class PresenterDetailPlayer
-(private val view: DetailPlayerView, private val detailRepository: DetailRepositoryTeamPlayer)
+class PresenterDetailTeam
+(private val view: DetailTeamView, private val detailRepository: DetailRepositoryTeamPlayer)
 {
 
 

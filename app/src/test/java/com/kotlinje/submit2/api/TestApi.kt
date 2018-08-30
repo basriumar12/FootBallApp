@@ -1,4 +1,4 @@
-package com.kotlinje.submit2
+package com.kotlinje.submit2.api
 
 import com.kotlinje.submit2.network.ApiRepos
 import org.junit.Test
@@ -13,7 +13,7 @@ class TestApi {
     @Test
     fun testRetro (){
         val apiRepos = mock (ApiRepos::class.java)
-        var ligaID : Int =4328
+        var ligaID : String ="4328"
         apiRepos.getLast(ligaID)
         verify(apiRepos).getLast(ligaID)
     }

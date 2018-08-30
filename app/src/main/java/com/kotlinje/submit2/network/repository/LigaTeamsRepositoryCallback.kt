@@ -9,7 +9,7 @@ import com.kotlinje.submit2.model.team.TeamResponse
 /**
  * Created by User on 27/05/2018.
  */
-interface TeamsRepositoryCallback <T> {
+interface LigaTeamsRepositoryCallback <T> {
 
     fun onDataLoaded(data: ResponseLiga?)
     fun onDataError()

@@ -20,5 +20,5 @@ object RetrofitInit {
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
 
-    fun getUrl():ServiceGetListLiga = retrofit.create(ServiceGetListLiga::class.java)
+    fun getUrl():Servicetest = retrofit.create(Servicetest::class.java)
 }

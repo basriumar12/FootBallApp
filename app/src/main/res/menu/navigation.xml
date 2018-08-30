@@ -3,12 +3,12 @@
     <item
         android:id="@+id/nav_last_liga"
         android:icon="@drawable/ic_home_black_24dp"
-        android:title="Last Match" />
+        android:title="Match" />
 
     <item
         android:id="@+id/nav_next_liga"
         android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="Next Match" />
+        android:title="Teams" />
     <item
         android:id="@+id/nav_favorite"
         android:icon="@drawable/ic_favorite_black_24dp"

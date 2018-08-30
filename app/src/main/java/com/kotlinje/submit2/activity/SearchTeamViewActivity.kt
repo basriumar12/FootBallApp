@@ -9,82 +9,57 @@ import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import com.kotlinje.submit2.R
-import com.kotlinje.submit2.adapter.AdapterListSearch
-import com.kotlinje.submit2.model.event.ResponseTeam
-import com.kotlinje.submit2.model.search.EventItem
+import com.kotlinje.submit2.adapter.SearchTeamsAdapter
+import com.kotlinje.submit2.model.search.ResponseSearchTeam
+import com.kotlinje.submit2.model.search.TeamsItem
 import com.kotlinje.submit2.network.repository.MatchRepository
-import com.kotlinje.submit2.presenter.PresenterSearch
-import com.kotlinje.submit2.view.SearchMatchView
+import com.kotlinje.submit2.presenter.PresenterSearchTeam
+import com.kotlinje.submit2.utility.invisible
+import com.kotlinje.submit2.utility.visible
+import com.kotlinje.submit2.view.SearchTeamView
 import kotlinx.android.synthetic.main.activity_search_match.*
 import kotlinx.android.synthetic.main.content_search.*
 import org.jetbrains.anko.startActivity
 
-class SearchMatchViewActivity : AppCompatActivity(), SearchMatchView {
-    override fun onDataLoaded(data: ResponseTeam?) {
-        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+class SearchTeamViewActivity : AppCompatActivity(), SearchTeamView {
+    override fun onDataLoaded(data: ResponseSearchTeam?) {
+
     }
-
-
-    override fun showEventList(data: List<EventItem>?) {
-        liga.clear()
-        if (data!=null){
-            liga.addAll(data)
-            Log.d("tag", "data search :"+data)
-
-
-        }
-        adapterList?.notifyDataSetChanged()
-        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-
 
     override fun onDataError() {
-  //      TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     override fun showLoadingProgress() {
-        progressBarId.visibility = View.VISIBLE
-
-//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    load?.visible()
     }
 
     override fun hideLoadingProgress() {
-        progressBarId.visibility = View.INVISIBLE
-        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+      load?.invisible()
     }
 
-    override fun showToast(message: String?) {
-        showToast("Error")
-     //   TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun showEventList(data: List<TeamsItem>?) {
+        teams.clear()
+        if (data != null) {
+            teams.addAll(data)
+        }
+        adapterList?.notifyDataSetChanged()
     }
-
-
 
 
     var load : ProgressBar? = null
-    //var present : PresenterMain? =null
-    var present : PresenterSearch? =null
-    //var adapterList : AdapterListData? = null
-    var adapterList : AdapterListSearch? = null
-  //  var liga : MutableList<EventLiga> = mutableListOf()
-    var liga : MutableList<EventItem> = mutableListOf()
+
+    var present : PresenterSearchTeam? =null
+    var adapterList : SearchTeamsAdapter? = null
+    var teams : MutableList<TeamsItem> = mutableListOf()
     var hasil : String? = null
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search_match)
-        val toolbar = findViewById(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
-        rv_list_match.layoutManager = LinearLayoutManager(this@SearchMatchViewActivity)
+        rv_list_match.layoutManager = LinearLayoutManager(this@SearchTeamViewActivity)
 
-        present = PresenterSearch(this, MatchRepository())
-
-
-      /*  progressBarId.visibility = View.INVISIBLE
-        adapterList = AdapterListData(liga){}
-        rv_list_match.adapter = adapterList*/
+        present = PresenterSearchTeam(this, MatchRepository())
 
 
         search_match.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
@@ -92,39 +67,25 @@ class SearchMatchViewActivity : AppCompatActivity(), SearchMatchView {
                 progressBarId.visibility = View.VISIBLE
                 hasil = query!!
 
-                Log.e("query","search : " +query)
                 if (query.length > 4 ) {
                     //present?.getMatchLast(hasil!!)
-                    present?.getMatchSearch(hasil!!)
+                    present?.getTeamsSearch(hasil!!)
 
                     progressBarId.visibility = View.INVISIBLE
-                    adapterList = AdapterListSearch(liga){
-                      startActivity<DetailActivity>("idEvent" to it.idEvent)
+                    adapterList = SearchTeamsAdapter(teams){
+                      startActivity<DetailTeamActivity>("idEvent" to it.idTeam)
                     }
                     rv_list_match.adapter = adapterList
                 }
                 return true
-            //   return false
-                //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
 
-            /*    hasil = newText!!
 
-                Log.e("query","search :" +newText)
-                if (newText.length > 6 ) {
-                    present?.getMatchLast(hasil!!)
-                    rv_list_match.layoutManager = LinearLayoutManager(this@SearchMatchViewActivity)
-                    rv_list_match.adapter = adapterList
-                }*/
                 return false
-                //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
+              }
         })
-
-        //present?.getSearchMatch(hasil!!)
-
 
 
     }
