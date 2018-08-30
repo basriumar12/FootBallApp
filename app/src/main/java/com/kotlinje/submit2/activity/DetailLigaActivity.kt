@@ -4,6 +4,7 @@ import android.database.sqlite.SQLiteConstraintException
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -12,9 +13,11 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.kotlinje.submit2.R
-import com.kotlinje.submit2.model.EventLiga
-import com.kotlinje.submit2.model.ModelFavorite
-import com.kotlinje.submit2.model.ModelTeamItem
+import com.kotlinje.submit2.model.event.EventLiga
+import com.kotlinje.submit2.model.event.ModelFavorite
+import com.kotlinje.submit2.model.event.ModelTeam
+import com.kotlinje.submit2.model.event.ModelTeamItem
+import com.kotlinje.submit2.network.repository.DetailRepository
 import com.kotlinje.submit2.presenter.PresenterDetail
 import com.kotlinje.submit2.view.DetailView
 import kotlinx.android.synthetic.main.activity_detail.*
@@ -29,6 +32,13 @@ import org.jetbrains.anko.db.select
 //pada detail activity menampilkan 2 tim dan benderanya
 //selain itu menampilkan menu item untuk menambahkan team favorite
 class DetailActivity : AppCompatActivity(), DetailView {
+    override fun onDataLoaded(data: ModelTeam?) {
+       // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onDataError() {
+       // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     private fun addToFavorite(){
 
@@ -60,7 +70,7 @@ class DetailActivity : AppCompatActivity(), DetailView {
                         "(EVENT_ID = {id})","id" to idEvent)
 //                delete(EventFavorite.TABLE_FAVORITE,"(EVENT_ID = {id})","id" to )
             }
-            showToastDetail("hapus dari favorite")
+                showToastDetail("hapus dari favorit")
         } catch (e: SQLiteConstraintException) {
             showToastDetail("error hapus :"+e.localizedMessage)
 //
@@ -170,17 +180,26 @@ class DetailActivity : AppCompatActivity(), DetailView {
         eventLiga = event
         idHomeTeam = event?.idHomeTeam
         idAwayTeam = event?.idAwayTeam
+        Log.d("home","test :"+idHomeTeam+" "+idAwayTeam)
         textScoreHomeTeam.text = event?.intHomeScore
         textScoreAwayTeam.text = event?.intAwayScore
         textGoalHomeTeam.text = event?.strHomeGoalDetails
         tvGoalAwayTeam.text = event?.strAwayGoalDetails
-        present?.getHomeimg(idHomeTeam)
-        present?.getAwayImg(idAwayTeam)
 
+        idHome  = idHomeTeam
+        idAway = idAwayTeam
+        Log.d("home","team1 :"+idHome+" "+idAway)
+           present?.getImgHome(idHome.toString())
+         present?.getImgAway(idAway.toString())
+
+      /*  present?.getImgHome(idHome.toString())
+        present?.getImgAway(idAway.toString())*/
         // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     //variabel
+    var idHome : String? = null
+    var idAway : String? = null
     private var  isEvenFavor: Boolean = false
     var load: ProgressBar? = null
     var present: PresenterDetail? = null
@@ -204,8 +223,8 @@ class DetailActivity : AppCompatActivity(), DetailView {
 
         //get intent
         idEvent = intent.getStringExtra("idEvent")
-        present = PresenterDetail(this)
-        present?.getLastLiga(idEvent)
+        present = PresenterDetail(this, DetailRepository())
+        present?.getMatchLast(idEvent)
         imgHomeTeam = img_home_team
         imgAwayTeam = img_away_team
         textScoreHomeTeam = text_score_home_team

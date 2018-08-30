@@ -7,8 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.kotlinje.submit2.R
-import com.kotlinje.submit2.model.EventLiga
-import com.kotlinje.submit2.model.ModelFavorite
+import com.kotlinje.submit2.model.event.ModelFavorite
 import org.jetbrains.anko.find
 import org.jetbrains.anko.sdk25.coroutines.onClick
 
@@ -17,19 +16,19 @@ import org.jetbrains.anko.sdk25.coroutines.onClick
  */
 // add coruntines anko
 //submission 4
-class AdapterFavorite(private val evenFavor:List<ModelFavorite>,
-                        val listiner:(ModelFavorite)-> Unit):
-        RecyclerView.Adapter<AdapterFavorite.ViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdapterFavorite.ViewHolder {
+class AdapterFavoriteMatch(private val evenFavor:List<ModelFavorite>,
+                           val listiner:(ModelFavorite)-> Unit):
+        RecyclerView.Adapter<AdapterFavoriteMatch.ViewHolder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdapterFavoriteMatch.ViewHolder {
         //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         val v  : View = LayoutInflater.from(parent.context).inflate(R.layout.item_list,parent,false)
-        return AdapterFavorite.ViewHolder(v)
+        return AdapterFavoriteMatch.ViewHolder(v)
     }
 
     override fun getItemCount(): Int = evenFavor.size
 
 
-    override fun onBindViewHolder(holder: AdapterFavorite.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: AdapterFavoriteMatch.ViewHolder, position: Int) {
     //    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
            holder.bindItem(evenFavor[position],listiner)
         }
